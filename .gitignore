@@ -1,0 +1,16 @@
+﻿# Build directories
+bin/
+obj/
+
+# Rider files
+.idea/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Settings files
+appsettings.json
+appsettings.*.json
+Properties/
