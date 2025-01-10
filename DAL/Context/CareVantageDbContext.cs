@@ -2,7 +2,8 @@
 using CVB.BL.Domain.PaymentPck;
 using CVB.BL.Domain.PaymentPck.BillingInvoice;
 using CVB.BL.Domain.Service;
-using CVB.BL.Domain.Subscription;
+using CVB.BL.Domain.ServicePck;
+using CVB.BL.Domain.SubscriptionPck;
 using CVB.BL.Domain.Usage;
 using Microsoft.EntityFrameworkCore;
 

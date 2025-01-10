@@ -1,4 +1,4 @@
-﻿namespace CVB.BL.Domain.Subscription;
+﻿namespace CVB.BL.Domain.SubscriptionPck;
 
 public class SubscriptionPricing
 {

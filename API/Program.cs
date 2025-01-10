@@ -3,6 +3,8 @@ using CVB.DAL.Context;
 using CVB.DAL.Initializer;
 using CVB.DAL.Repository.AppointmentPck;
 using CVB.DAL.Repository.PaymentPck;
+using CVB.DAL.Repository.ServicePck;
+using CVB.DAL.Repository.SubscriptionPck;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,9 @@ builder.Services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
 // Repositories
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 
 // Services
 builder.Services.AddScoped<IUnitOfWorkCareVantage, UnitOfWorkCareVantage>();
