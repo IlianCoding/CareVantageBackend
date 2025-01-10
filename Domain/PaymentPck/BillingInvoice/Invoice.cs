@@ -1,4 +1,4 @@
-﻿namespace CVB.BL.Domain.Payment.BillingInvoice;
+﻿namespace CVB.BL.Domain.PaymentPck.BillingInvoice;
 
 public class Invoice
 {

@@ -1,4 +1,4 @@
-﻿namespace CVB.BL.Domain.Appointment;
+﻿namespace CVB.BL.Domain.AppointmentPck;
 
 public class AppointmentDetails
 {

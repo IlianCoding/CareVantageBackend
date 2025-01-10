@@ -1,4 +1,4 @@
-﻿namespace CVB.BL.Domain.Payment.BillingInvoice;
+﻿namespace CVB.BL.Domain.PaymentPck.BillingInvoice;
 
 public class InvoiceDetails
 {
@@ -10,5 +10,5 @@ public class InvoiceDetails
     public decimal TotalAmount { get; set; }
     public InvoiceStatus Status { get; set; }
     
-    public virtual required BillingInvoice.Invoice Invoice { get; set; }
+    public virtual required Invoice Invoice { get; set; }
 }

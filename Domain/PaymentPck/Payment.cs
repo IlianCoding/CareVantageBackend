@@ -1,6 +1,6 @@
-﻿using CVB.BL.Domain.Payment.BillingInvoice;
+﻿using CVB.BL.Domain.PaymentPck.BillingInvoice;
 
-namespace CVB.BL.Domain.Payment;
+namespace CVB.BL.Domain.PaymentPck;
 
 public class Payment
 {

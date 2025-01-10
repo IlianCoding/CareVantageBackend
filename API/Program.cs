@@ -1,5 +1,8 @@
+using CVB.BL.Utils.UnitOfWorkPck;
 using CVB.DAL.Context;
 using CVB.DAL.Initializer;
+using CVB.DAL.Repository.AppointmentPck;
+using CVB.DAL.Repository.PaymentPck;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +13,14 @@ builder.Services.AddDbContext<CareVantageDbContext>(
 builder.Services.AddDbContext<KeycloakDbContext>(
     options => options.UseNpgsql(builder.Configuration.GetConnectionString("KeycloakConnection")));
 builder.Services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+
+// Repositories
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
+// Services
+builder.Services.AddScoped<IUnitOfWorkCareVantage, UnitOfWorkCareVantage>();
+builder.Services.AddScoped<IUnitOfWorkKeycloak, UnitOfWorkKeycloak>();
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();

@@ -1,4 +1,4 @@
-﻿namespace CVB.BL.Domain.Payment;
+﻿namespace CVB.BL.Domain.PaymentPck;
 
 public enum PaymentStatus
 {

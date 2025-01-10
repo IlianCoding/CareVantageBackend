@@ -1,6 +1,6 @@
-﻿using CVB.BL.Domain.Appointment;
-using CVB.BL.Domain.Payment;
-using CVB.BL.Domain.Payment.BillingInvoice;
+﻿using CVB.BL.Domain.AppointmentPck;
+using CVB.BL.Domain.PaymentPck;
+using CVB.BL.Domain.PaymentPck.BillingInvoice;
 using CVB.BL.Domain.Service;
 using CVB.BL.Domain.Subscription;
 using CVB.BL.Domain.Usage;
