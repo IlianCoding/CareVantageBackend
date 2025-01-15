@@ -22,4 +22,13 @@
       <ProjectReference Include="..\BL\BL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controllers\AppointmentPck\" />
+      <Folder Include="Controllers\PaymentPck\" />
+      <Folder Include="Controllers\UserPck\" />
+      <Folder Include="Models\AppointmentPck\" />
+      <Folder Include="Models\PaymentPck\" />
+      <Folder Include="Models\UserPck\" />
+    </ItemGroup>
+
 </Project>

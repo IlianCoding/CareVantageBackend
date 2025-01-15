@@ -43,7 +43,8 @@ public class CareVantageDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.HasOne(d => d.Details)
                 .WithOne(p => p.Appointment)
-                .HasForeignKey<AppointmentDetails>(d => d.AppointmentId);
+                .HasForeignKey<AppointmentDetails>(d => d.AppointmentId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Service>(entity =>
@@ -52,13 +53,16 @@ public class CareVantageDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.HasOne(d => d.Pricing)
                 .WithOne(p => p.Service)
-                .HasForeignKey<ServicePricing>(d => d.ServiceId);
+                .HasForeignKey<ServicePricing>(d => d.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(d => d.Features)
                 .WithOne(p => p.Service)
-                .HasForeignKey<ServiceFeature>(d => d.ServiceId);
+                .HasForeignKey<ServiceFeature>(d => d.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
             entity.HasMany(r => r.Reviews)
                 .WithOne(r => r.Service)
-                .HasForeignKey(r => r.ServiceId);
+                .HasForeignKey(r => r.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Subscription>(entity =>
@@ -67,10 +71,12 @@ public class CareVantageDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.HasOne(d => d.Period)
                 .WithOne(p => p.Subscription)
-                .HasForeignKey<SubscriptionPeriod>(d => d.SubscriptionId);
+                .HasForeignKey<SubscriptionPeriod>(d => d.SubscriptionId)
+                .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(d => d.Pricing)
                 .WithOne(p => p.Subscription)
-                .HasForeignKey<SubscriptionPricing>(d => d.SubscriptionId);
+                .HasForeignKey<SubscriptionPricing>(d => d.SubscriptionId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<UsageRecord>(entity =>
@@ -79,7 +85,8 @@ public class CareVantageDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.HasOne(d => d.Metrics)
                 .WithOne(p => p.UsageRecord)
-                .HasForeignKey<UsageMetrics>(d => d.UsageRecordId);
+                .HasForeignKey<UsageMetrics>(d => d.UsageRecordId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Payment>(entity =>

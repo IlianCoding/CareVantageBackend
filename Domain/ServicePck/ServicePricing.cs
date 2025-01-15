@@ -7,5 +7,5 @@ public class ServicePricing
     public decimal BasePrice { get; set; }
     public BillingType BillingType { get; set; }
     
-    public virtual required Service Service { get; set; }
+    public virtual Service? Service { get; set; }
 }
