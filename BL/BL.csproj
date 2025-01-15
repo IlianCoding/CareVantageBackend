@@ -17,4 +17,9 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Service\UsagePck\" />
+      <Folder Include="Service\UserPck\" />
+    </ItemGroup>
+
 </Project>

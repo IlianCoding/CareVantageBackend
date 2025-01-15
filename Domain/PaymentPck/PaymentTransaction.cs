@@ -7,5 +7,5 @@ public class PaymentTransaction
     public required string TransactionId { get; set; }
     public Guid? RefundedPaymentId { get; set; }
     
-    public virtual required PaymentPck.Payment Payment { get; set; }
+    public virtual required Payment Payment { get; set; }
 }

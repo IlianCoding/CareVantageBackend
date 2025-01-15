@@ -1,4 +1,6 @@
-﻿namespace CVB.BL.Domain.ServicePck;
+﻿using CVB.BL.Domain.ReviewPck;
+
+namespace CVB.BL.Domain.ServicePck;
 
 public class Service
 {
@@ -9,4 +11,5 @@ public class Service
     
     public virtual required ServicePricing Pricing { get; set; }
     public virtual required ServiceFeature Features { get; set; }
+    public virtual ICollection<Review>? Reviews { get; set; }
 }

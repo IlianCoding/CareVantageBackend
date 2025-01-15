@@ -1,4 +1,4 @@
-﻿namespace CVB.BL.Domain.User;
+﻿namespace CVB.BL.Domain.UserPck;
 
 public class UserProfile
 {

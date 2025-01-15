@@ -1,4 +1,4 @@
-﻿namespace CVB.BL.Domain.Usage;
+﻿namespace CVB.BL.Domain.UsagePck;
 
 public class UsageMetrics
 {

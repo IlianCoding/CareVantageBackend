@@ -1,10 +1,10 @@
 ﻿using CVB.BL.Domain.AppointmentPck;
 using CVB.BL.Domain.PaymentPck;
 using CVB.BL.Domain.PaymentPck.BillingInvoice;
-using CVB.BL.Domain.Service;
+using CVB.BL.Domain.ReviewPck;
 using CVB.BL.Domain.ServicePck;
 using CVB.BL.Domain.SubscriptionPck;
-using CVB.BL.Domain.Usage;
+using CVB.BL.Domain.UsagePck;
 using Microsoft.EntityFrameworkCore;
 
 namespace CVB.DAL.Context;
@@ -27,6 +27,8 @@ public class CareVantageDbContext : DbContext
     public DbSet<PaymentMethod> PaymentMethods { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<InvoiceDetails> InvoiceDetails { get; set; }
+    public DbSet<Review> Reviews { get; set; }
+    public DbSet<ReviewDetails> ReviewDetails { get; set; }
     
     public CareVantageDbContext(DbContextOptions<CareVantageDbContext> dbContextOptions) : base(dbContextOptions)
     {
@@ -54,6 +56,9 @@ public class CareVantageDbContext : DbContext
             entity.HasOne(d => d.Features)
                 .WithOne(p => p.Service)
                 .HasForeignKey<ServiceFeature>(d => d.ServiceId);
+            entity.HasMany(r => r.Reviews)
+                .WithOne(r => r.Service)
+                .HasForeignKey(r => r.ServiceId);
         });
 
         modelBuilder.Entity<Subscription>(entity =>
@@ -105,6 +110,15 @@ public class CareVantageDbContext : DbContext
         {
             entity.ToTable("PaymentMethods");
             entity.HasKey(e => e.Id);
+        });
+
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.ToTable("Reviews");
+            entity.HasKey(e => e.Id);
+            entity.HasOne(e => e.ReviewDetails)
+                .WithOne(e => e.Review)
+                .HasForeignKey<ReviewDetails>(d => d.ReviewId);
         });
     }
 }

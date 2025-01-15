@@ -1,4 +1,4 @@
-﻿using CVB.BL.Domain.User;
+﻿using CVB.BL.Domain.UserPck;
 using Microsoft.EntityFrameworkCore;
 
 namespace CVB.DAL.Context;

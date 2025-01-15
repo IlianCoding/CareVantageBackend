@@ -1,6 +1,4 @@
-﻿using CVB.BL.Domain.Service;
-
-namespace CVB.BL.Domain.ServicePck;
+﻿namespace CVB.BL.Domain.ServicePck;
 
 public class ServicePricing
 {
