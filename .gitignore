@@ -9,6 +9,7 @@ obj/
 .env
 .env.local
 .env.*.local
+k8s/
 
 # Settings files
 appsettings.json

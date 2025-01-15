@@ -1,0 +1,53 @@
+services:
+  dotnet-backend:
+    build:
+      context: ..
+      dockerfile: ./Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__KeycloakConnection=Host=keycloak-db;Port=5432;Database=${POSTGRES_DB_KEYCLOAK};Username=${POSTGRES_KEYCLOAK_USER};Password=${POSTGRES_KEYCLOAK_PASSWORD}
+      - ConnectionStrings__CareVantageConnection=Host=carevantage-db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    depends_on:
+      - carevantage-db
+      - keycloak-db
+    networks:
+      - carevantage-network
+        
+  carevantage-db:
+    image: postgres:latest
+    container_name: carevantage-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - carevantage-db-data:/var/lib/postgresql/data
+    networks:
+      - carevantage-network
+        
+  keycloak-db:
+    image: postgres:latest
+    container_name: keycloak-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_KEYCLOAK_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_KEYCLOAK_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB_KEYCLOAK}
+    volumes:
+      - keycloak-db-data:/var/lib/postgresql/data
+    networks:
+      - carevantage-network
+
+volumes:
+  carevantage-db-data:
+  keycloak-db-data:
+
+networks:
+  carevantage-network:
