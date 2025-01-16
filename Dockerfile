@@ -1,5 +1,5 @@
 ﻿# Using the base dotnet image for building the entire project
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
 # Copying the needed solution files into their respective directory in the container.

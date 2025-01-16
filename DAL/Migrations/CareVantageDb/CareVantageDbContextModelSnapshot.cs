@@ -22,7 +22,7 @@ namespace CVB.DAL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CVB.BL.Domain.Appointment.Appointment", b =>
+            modelBuilder.Entity("CVB.BL.Domain.AppointmentPck.Appointment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,7 +48,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("Appointments", (string)null);
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Appointment.AppointmentDetails", b =>
+            modelBuilder.Entity("CVB.BL.Domain.AppointmentPck.AppointmentDetails", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,7 +72,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("AppointmentDetails");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.BillingInvoice.Invoice", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.BillingInvoice.Invoice", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,7 +89,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("Invoices", (string)null);
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.BillingInvoice.InvoiceDetails", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.BillingInvoice.InvoiceDetails", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,7 +122,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("InvoiceDetails");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.Payment", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.Payment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -139,7 +139,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("Payments", (string)null);
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.PaymentDetails", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.PaymentDetails", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,7 +167,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("PaymentDetails");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.PaymentMethod", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.PaymentMethod", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,7 +189,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("PaymentMethods", (string)null);
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.PaymentTransaction", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.PaymentTransaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -213,7 +213,62 @@ namespace CVB.DAL.Migrations
                     b.ToTable("PaymentTransactions");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Service.Service", b =>
+            modelBuilder.Entity("CVB.BL.Domain.ReviewPck.Review", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("Reviews", (string)null);
+                });
+
+            modelBuilder.Entity("CVB.BL.Domain.ReviewPck.ReviewDetails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("NumberOfDislikes")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NumberOfLikes")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId")
+                        .IsUnique();
+
+                    b.ToTable("ReviewDetails");
+                });
+
+            modelBuilder.Entity("CVB.BL.Domain.ServicePck.Service", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -235,7 +290,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("Services", (string)null);
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Service.ServiceFeature", b =>
+            modelBuilder.Entity("CVB.BL.Domain.ServicePck.ServiceFeature", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -260,7 +315,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("ServiceFeatures");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Service.ServicePricing", b =>
+            modelBuilder.Entity("CVB.BL.Domain.ServicePck.ServicePricing", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -283,7 +338,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("ServicePricings");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Subscription.Subscription", b =>
+            modelBuilder.Entity("CVB.BL.Domain.SubscriptionPck.Subscription", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -306,7 +361,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("Subscriptions", (string)null);
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Subscription.SubscriptionPeriod", b =>
+            modelBuilder.Entity("CVB.BL.Domain.SubscriptionPck.SubscriptionPeriod", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -329,7 +384,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("SubscriptionPeriods");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Subscription.SubscriptionPricing", b =>
+            modelBuilder.Entity("CVB.BL.Domain.SubscriptionPck.SubscriptionPricing", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -352,7 +407,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("SubscriptionPricings");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Usage.UsageMetrics", b =>
+            modelBuilder.Entity("CVB.BL.Domain.UsagePck.UsageMetrics", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -375,7 +430,7 @@ namespace CVB.DAL.Migrations
                     b.ToTable("UsageMetrics");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Usage.UsageRecord", b =>
+            modelBuilder.Entity("CVB.BL.Domain.UsagePck.UsageRecord", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -395,48 +450,48 @@ namespace CVB.DAL.Migrations
                     b.ToTable("UsageRecords", (string)null);
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Appointment.AppointmentDetails", b =>
+            modelBuilder.Entity("CVB.BL.Domain.AppointmentPck.AppointmentDetails", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Appointment.Appointment", "Appointment")
+                    b.HasOne("CVB.BL.Domain.AppointmentPck.Appointment", "Appointment")
                         .WithOne("Details")
-                        .HasForeignKey("CVB.BL.Domain.Appointment.AppointmentDetails", "AppointmentId")
+                        .HasForeignKey("CVB.BL.Domain.AppointmentPck.AppointmentDetails", "AppointmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Appointment");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.BillingInvoice.Invoice", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.BillingInvoice.Invoice", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Payment.Payment", "Payment")
+                    b.HasOne("CVB.BL.Domain.PaymentPck.Payment", "Payment")
                         .WithOne("Invoice")
-                        .HasForeignKey("CVB.BL.Domain.Payment.BillingInvoice.Invoice", "PaymentId")
+                        .HasForeignKey("CVB.BL.Domain.PaymentPck.BillingInvoice.Invoice", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Payment");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.BillingInvoice.InvoiceDetails", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.BillingInvoice.InvoiceDetails", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Payment.BillingInvoice.Invoice", "Invoice")
+                    b.HasOne("CVB.BL.Domain.PaymentPck.BillingInvoice.Invoice", "Invoice")
                         .WithOne("Details")
-                        .HasForeignKey("CVB.BL.Domain.Payment.BillingInvoice.InvoiceDetails", "InvoiceId")
+                        .HasForeignKey("CVB.BL.Domain.PaymentPck.BillingInvoice.InvoiceDetails", "InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.PaymentDetails", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.PaymentDetails", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Payment.Payment", "Payment")
+                    b.HasOne("CVB.BL.Domain.PaymentPck.Payment", "Payment")
                         .WithOne("Details")
-                        .HasForeignKey("CVB.BL.Domain.Payment.PaymentDetails", "PaymentId")
+                        .HasForeignKey("CVB.BL.Domain.PaymentPck.PaymentDetails", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CVB.BL.Domain.Payment.PaymentMethod", "PaymentMethod")
+                    b.HasOne("CVB.BL.Domain.PaymentPck.PaymentMethod", "PaymentMethod")
                         .WithMany()
                         .HasForeignKey("PaymentMethodId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -447,85 +502,107 @@ namespace CVB.DAL.Migrations
                     b.Navigation("PaymentMethod");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.PaymentTransaction", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.PaymentTransaction", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Payment.Payment", "Payment")
+                    b.HasOne("CVB.BL.Domain.PaymentPck.Payment", "Payment")
                         .WithOne("Transaction")
-                        .HasForeignKey("CVB.BL.Domain.Payment.PaymentTransaction", "PaymentId")
+                        .HasForeignKey("CVB.BL.Domain.PaymentPck.PaymentTransaction", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Payment");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Service.ServiceFeature", b =>
+            modelBuilder.Entity("CVB.BL.Domain.ReviewPck.Review", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Service.Service", "Service")
+                    b.HasOne("CVB.BL.Domain.ServicePck.Service", "Service")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("CVB.BL.Domain.ReviewPck.ReviewDetails", b =>
+                {
+                    b.HasOne("CVB.BL.Domain.ReviewPck.Review", "Review")
+                        .WithOne("ReviewDetails")
+                        .HasForeignKey("CVB.BL.Domain.ReviewPck.ReviewDetails", "ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("CVB.BL.Domain.ServicePck.ServiceFeature", b =>
+                {
+                    b.HasOne("CVB.BL.Domain.ServicePck.Service", "Service")
                         .WithOne("Features")
-                        .HasForeignKey("CVB.BL.Domain.Service.ServiceFeature", "ServiceId")
+                        .HasForeignKey("CVB.BL.Domain.ServicePck.ServiceFeature", "ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Service.ServicePricing", b =>
+            modelBuilder.Entity("CVB.BL.Domain.ServicePck.ServicePricing", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Service.Service", "Service")
+                    b.HasOne("CVB.BL.Domain.ServicePck.Service", "Service")
                         .WithOne("Pricing")
-                        .HasForeignKey("CVB.BL.Domain.Service.ServicePricing", "ServiceId")
+                        .HasForeignKey("CVB.BL.Domain.ServicePck.ServicePricing", "ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Subscription.SubscriptionPeriod", b =>
+            modelBuilder.Entity("CVB.BL.Domain.SubscriptionPck.SubscriptionPeriod", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Subscription.Subscription", "Subscription")
+                    b.HasOne("CVB.BL.Domain.SubscriptionPck.Subscription", "Subscription")
                         .WithOne("Period")
-                        .HasForeignKey("CVB.BL.Domain.Subscription.SubscriptionPeriod", "SubscriptionId")
+                        .HasForeignKey("CVB.BL.Domain.SubscriptionPck.SubscriptionPeriod", "SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Subscription");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Subscription.SubscriptionPricing", b =>
+            modelBuilder.Entity("CVB.BL.Domain.SubscriptionPck.SubscriptionPricing", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Subscription.Subscription", "Subscription")
+                    b.HasOne("CVB.BL.Domain.SubscriptionPck.Subscription", "Subscription")
                         .WithOne("Pricing")
-                        .HasForeignKey("CVB.BL.Domain.Subscription.SubscriptionPricing", "SubscriptionId")
+                        .HasForeignKey("CVB.BL.Domain.SubscriptionPck.SubscriptionPricing", "SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Subscription");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Usage.UsageMetrics", b =>
+            modelBuilder.Entity("CVB.BL.Domain.UsagePck.UsageMetrics", b =>
                 {
-                    b.HasOne("CVB.BL.Domain.Usage.UsageRecord", "UsageRecord")
+                    b.HasOne("CVB.BL.Domain.UsagePck.UsageRecord", "UsageRecord")
                         .WithOne("Metrics")
-                        .HasForeignKey("CVB.BL.Domain.Usage.UsageMetrics", "UsageRecordId")
+                        .HasForeignKey("CVB.BL.Domain.UsagePck.UsageMetrics", "UsageRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("UsageRecord");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Appointment.Appointment", b =>
+            modelBuilder.Entity("CVB.BL.Domain.AppointmentPck.Appointment", b =>
                 {
                     b.Navigation("Details")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.BillingInvoice.Invoice", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.BillingInvoice.Invoice", b =>
                 {
                     b.Navigation("Details")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Payment.Payment", b =>
+            modelBuilder.Entity("CVB.BL.Domain.PaymentPck.Payment", b =>
                 {
                     b.Navigation("Details")
                         .IsRequired();
@@ -537,16 +614,24 @@ namespace CVB.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Service.Service", b =>
+            modelBuilder.Entity("CVB.BL.Domain.ReviewPck.Review", b =>
+                {
+                    b.Navigation("ReviewDetails")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CVB.BL.Domain.ServicePck.Service", b =>
                 {
                     b.Navigation("Features")
                         .IsRequired();
 
                     b.Navigation("Pricing")
                         .IsRequired();
+
+                    b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Subscription.Subscription", b =>
+            modelBuilder.Entity("CVB.BL.Domain.SubscriptionPck.Subscription", b =>
                 {
                     b.Navigation("Period")
                         .IsRequired();
@@ -555,7 +640,7 @@ namespace CVB.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CVB.BL.Domain.Usage.UsageRecord", b =>
+            modelBuilder.Entity("CVB.BL.Domain.UsagePck.UsageRecord", b =>
                 {
                     b.Navigation("Metrics")
                         .IsRequired();

@@ -10,8 +10,3 @@ obj/
 .env.local
 .env.*.local
 k8s/
-
-# Settings files
-appsettings.json
-appsettings.*.json
-Properties/
