@@ -8,16 +8,31 @@ namespace CVB.API.Controllers.ServicePck;
 [Route("api/[controller]")]
 public class ServiceChangesController(IServiceManager serviceManager) : ControllerBase
 {
-    [HttpPost]
-    public IActionResult AddNewService(ServiceModel service)
+    [HttpPost("add-service")]
+    public IActionResult AddNewService(AddServiceDto serviceAddRequest)
     {
-        var newService = serviceManager.AddService(service.IsActive, service.Features.Name,
-            service.Features.Description, service.Pricing.Price, service.Pricing.BillingType);
-        if (newService == null)
-        {
-            return 
-        }
+        if (!ModelState.IsValid) 
+            return BadRequest(ModelState);
         
-        return Ok(newService);
+        var serviceResult = serviceManager.AddService(serviceAddRequest.IsActive, serviceAddRequest.Name,
+            serviceAddRequest.Description, serviceAddRequest.Price, serviceAddRequest.BillingType);
+
+        return CreatedAtAction(
+            actionName: "GetService",
+            controllerName: "Service",
+            routeValues: new { id = serviceResult.Id },
+            value: serviceResult);
+    }
+    
+    [HttpPut("change-service")]
+    public IActionResult ChangeService(ChangeServiceDto serviceChangeRequest)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        serviceManager.ChangeService(serviceChangeRequest.Id, serviceChangeRequest.IsActive, serviceChangeRequest.Name,
+            serviceChangeRequest.Description, serviceChangeRequest.Price, serviceChangeRequest.BillingType);
+
+        return NoContent();
     }
 }

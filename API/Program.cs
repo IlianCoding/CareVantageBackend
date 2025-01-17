@@ -1,3 +1,5 @@
+using CVB.BL.Domain;
+using CVB.BL.Managers.ServicePck;
 using CVB.BL.Utils.UnitOfWorkPck;
 using CVB.DAL.Context;
 using CVB.DAL.Initializer;
@@ -41,6 +43,7 @@ builder.Services.AddDbContext<KeycloakDbContext>(
     options => options.UseNpgsql(keycloakConnectionString));
 
 builder.Services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+builder.Services.AddScoped<DomainClassValidator>();
 
 // Repositories
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
@@ -52,6 +55,7 @@ builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 // Services
 builder.Services.AddScoped<IUnitOfWorkCareVantage, UnitOfWorkCareVantage>();
 builder.Services.AddScoped<IUnitOfWorkKeycloak, UnitOfWorkKeycloak>();
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
@@ -84,23 +88,15 @@ using (var scope = app.Services.CreateScope())
 {
     try
     {
-        // Applying pending migrations if there are any present
-        var dbContextCareVantage = scope.ServiceProvider
-            .GetRequiredService<CareVantageDbContext>();
-        var dbContextKeycloak = scope.ServiceProvider
-            .GetRequiredService<KeycloakDbContext>();
-        await dbContextCareVantage.Database.MigrateAsync();
-        await dbContextKeycloak.Database.MigrateAsync();
+        // Initializing the database with data if necessary
+        var databaseInitializer = scope.ServiceProvider
+            .GetRequiredService<IDatabaseInitializer>();
+        await databaseInitializer.InitializeAsync();
     }
     catch (Exception e)
     {
         Console.WriteLine($"An error occurred while applying migrations to the databases: {e.Message}");
         throw;
     }
-    
-    // Initializing the database with data if necessary
-    var databaseInitializer = scope.ServiceProvider
-        .GetRequiredService<IDatabaseInitializer>();
-    await databaseInitializer.InitializeAsync();
 }
 app.Run();

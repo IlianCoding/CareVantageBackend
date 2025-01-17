@@ -1,3 +1,4 @@
+using CVB.BL.Domain;
 using CVB.BL.Domain.ReviewPck;
 using CVB.BL.Domain.ServicePck;
 using CVB.BL.Utils.UnitOfWorkPck;
@@ -5,7 +6,7 @@ using CVB.DAL.Repository.ServicePck;
 
 namespace CVB.BL.Managers.ServicePck;
 
-public class ServiceManager(IUnitOfWorkCareVantage unitOfWork, IServiceRepository repository) : IServiceManager
+public class ServiceManager(IUnitOfWorkCareVantage unitOfWork, IServiceRepository repository, DomainClassValidator validator) : IServiceManager
 {
     public Service ReadService(Guid id)
     {
@@ -29,7 +30,7 @@ public class ServiceManager(IUnitOfWorkCareVantage unitOfWork, IServiceRepositor
         }
     }
 
-    public void ChangeService(bool isActive, string name, string description, decimal basePrice, string billingType)
+    public void ChangeService(Guid id, bool isActive, string name, string description, decimal basePrice, string billingType)
     {
         throw new NotImplementedException();
     }
@@ -50,7 +51,7 @@ public class ServiceManager(IUnitOfWorkCareVantage unitOfWork, IServiceRepositor
     {
         return repository.GetAllServices();
     }
-
+    
     private Service InitializingService(bool isActive, string name, string description, decimal basePrice,
         string billingType)
     {
@@ -59,7 +60,7 @@ public class ServiceManager(IUnitOfWorkCareVantage unitOfWork, IServiceRepositor
             throw new ArgumentException($"Ongeldige waarde voor BillingType: {billingType}");
         }
         
-        return new Service
+        var service =  new Service
         {
             IsActive = isActive,
             Pricing = new ServicePricing
@@ -78,5 +79,10 @@ public class ServiceManager(IUnitOfWorkCareVantage unitOfWork, IServiceRepositor
             },
             Reviews = new List<Review>()
         };
+        
+        validator.ValidateEntity(service.Features);
+        validator.ValidateEntity(service.Pricing);
+
+        return service;
     }
 }

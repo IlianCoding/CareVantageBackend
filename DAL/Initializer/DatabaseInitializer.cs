@@ -4,83 +4,90 @@ using Microsoft.Extensions.Logging;
 
 namespace CVB.DAL.Initializer;
 
-public class DatabaseInitializer : IDatabaseInitializer
+public class DatabaseInitializer(
+    CareVantageDbContext careVantageDbContext,
+    KeycloakDbContext keycloakDbContext,
+    ILogger<DatabaseInitializer> logger)
+    : IDatabaseInitializer
 {
-    private readonly CareVantageDbContext _careVantageDbContext;
-    private readonly KeycloakDbContext _keycloakDbContext;
-    private readonly ILogger<DatabaseInitializer> _logger;
-    
-    public DatabaseInitializer(CareVantageDbContext careVantageDbContext, KeycloakDbContext keycloakDbContext, ILogger<DatabaseInitializer> logger)
-    {
-        _careVantageDbContext = careVantageDbContext;
-        _keycloakDbContext = keycloakDbContext;
-        _logger = logger;
-    }
-
     public async Task InitializeAsync()
     {
         await CheckDatabaseConnectionsAsync();
-        if (!await CheckIfDatabaseHasTablesAsync())
-        {
-            await InitializeEmptyDatabases();
-        }
+        await EnsureDatabasesCreatedAsync();
+        await ApplyMigrationsAsync();
     }
 
     private async Task CheckDatabaseConnectionsAsync()
     {
         try
         {
-            _logger.LogInformation("Testing database connections...");
+            logger.LogInformation("Testing database connections...");
             
-            await _careVantageDbContext.Database.CanConnectAsync();
-            _logger.LogInformation("Successfully connected to CareVantage database");
+            await careVantageDbContext.Database.CanConnectAsync();
+            logger.LogInformation("Successfully connected to CareVantage database");
             
-            await _keycloakDbContext.Database.CanConnectAsync();
-            _logger.LogInformation("Successfully connected to Keycloak database");
-
-        } catch (Exception e)
+            await keycloakDbContext.Database.CanConnectAsync();
+            logger.LogInformation("Successfully connected to Keycloak database");
+        }
+        catch (Exception e)
         {
-            _logger.LogError(e, "Failed to connect to database");
+            logger.LogError(e, "Failed to connect to database");
             throw new Exception("Database connection failed. Please check your connection strings and ensure databases are running.", e);
         }
     }
 
-    private async Task<bool> CheckIfDatabaseHasTablesAsync()
+    private async Task EnsureDatabasesCreatedAsync()
     {
         try
         {
-            var careVantageTables = (await _careVantageDbContext.Database
-                .SqlQuery<int>($"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public'")
-                .ToListAsync()).FirstOrDefault() > 0;
+            logger.LogInformation("Ensuring databases exist...");
             
-            var keycloakTables = (await _keycloakDbContext.Database
-                .SqlQuery<int>($"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public'")
-                .ToListAsync()).FirstOrDefault() > 0;
+            if (!await careVantageDbContext.Database.CanConnectAsync())
+            {
+                await careVantageDbContext.Database.EnsureCreatedAsync();
+                logger.LogInformation("Created CareVantage database");
+            }
             
-            _logger.LogInformation($"Database status - CareVantage: {careVantageTables}, Keycloak: {keycloakTables}");
-            return careVantageTables && keycloakTables;
-        } catch (Exception e)
+            if (!await keycloakDbContext.Database.CanConnectAsync())
+            {
+                await keycloakDbContext.Database.EnsureCreatedAsync();
+                logger.LogInformation("Created Keycloak database");
+            }
+        }
+        catch (Exception e)
         {
-            _logger.LogError(e, "Failed to check if database has tables");
-            throw new Exception("Failed to check if database has tables", e);
+            logger.LogError(e, "Failed to ensure databases exist");
+            throw new Exception("Failed to create databases", e);
         }
     }
-    
-    private async Task InitializeEmptyDatabases()
+
+    private async Task ApplyMigrationsAsync()
     {
         try
         {
-            _logger.LogInformation("Initializing empty databases...");
+            logger.LogInformation("Checking and applying pending migrations...");
 
-            await _careVantageDbContext.Database.MigrateAsync();
-            await _keycloakDbContext.Database.MigrateAsync();
+            var careVantagePendingMigrations = (await careVantageDbContext.Database.GetPendingMigrationsAsync()).ToList();
+            var keycloakPendingMigrations = (await keycloakDbContext.Database.GetPendingMigrationsAsync()).ToList();
 
-            _logger.LogInformation("Database initialization completed successfully");
+            if (careVantagePendingMigrations.Any())
+            {
+                logger.LogInformation($"Applying {careVantagePendingMigrations.Count} pending migrations to CareVantage database...");
+                await careVantageDbContext.Database.MigrateAsync();
+            }
+
+            if (keycloakPendingMigrations.Any())
+            {
+                logger.LogInformation($"Applying {keycloakPendingMigrations.Count} pending migrations to Keycloak database...");
+                await keycloakDbContext.Database.MigrateAsync();
+            }
+
+            logger.LogInformation("All migrations have been applied successfully");
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            _logger.LogError(ex, "Failed to initialize empty databases");
-            throw;
+            logger.LogError(e, "Failed to apply migrations");
+            throw new Exception("Failed to apply database migrations", e);
         }
     }
 }

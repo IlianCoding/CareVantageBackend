@@ -1,0 +1,10 @@
+POST http://localhost:5149/api/ServiceChanges/add-service
+Content-Type: application/json
+
+{
+    "IsActive": true,
+    "Name": "Licensing",
+    "Description": "Licensing for the software we provide here at CareVantage",
+    "Price": 12.99,
+    "BillingType": "PayPerUse"
+}
