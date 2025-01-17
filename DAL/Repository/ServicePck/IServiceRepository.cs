@@ -8,5 +8,6 @@ public interface IServiceRepository
     public void CreateService(Service service);
     public void UpdateService(Service service);
     public void DeleteServiceById(Guid id);
+    public IEnumerable<Service> GetTop5ActiveServices();
     public IEnumerable<Service> GetAllServices();
 }

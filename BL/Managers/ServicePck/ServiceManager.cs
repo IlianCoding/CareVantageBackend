@@ -9,16 +9,18 @@ public class ServiceManager(IUnitOfWorkCareVantage unitOfWork, IServiceRepositor
 {
     public Service ReadService(Guid id)
     {
-        throw new NotImplementedException();
+        return repository.GetServiceById(id);
     }
 
-    public void AddService(bool isActive, string name, string description, decimal basePrice, string billingType)
+    public Service AddService(bool isActive, string name, string description, decimal basePrice, string billingType)
     {
         try
         {
+            Service service = InitializingService(isActive, name, description, basePrice, billingType);
             unitOfWork.BeginTransaction();
-            repository.CreateService(InitializingService(isActive, name, description, basePrice, billingType));
+            repository.CreateService(service);
             unitOfWork.CommitTransaction();
+            return service;
         }
         catch (Exception e)
         {
@@ -37,6 +39,11 @@ public class ServiceManager(IUnitOfWorkCareVantage unitOfWork, IServiceRepositor
         unitOfWork.BeginTransaction();
         repository.DeleteServiceById(id);
         unitOfWork.CommitTransaction();
+    }
+
+    public IEnumerable<Service> ReadTop5ActiveServices()
+    {
+        return repository.GetTop5ActiveServices();
     }
 
     public IEnumerable<Service> ReadServices()
