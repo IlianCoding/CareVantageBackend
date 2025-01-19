@@ -42,7 +42,7 @@ builder.Services.AddDbContext<CareVantageDbContext>(
 builder.Services.AddDbContext<KeycloakDbContext>(
     options => options.UseNpgsql(keycloakConnectionString));
 
-builder.Services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+builder.Services.AddTransient<IDatabaseHealthCheck, DatabaseHealthCheck>();
 builder.Services.AddScoped<DomainClassValidator>();
 
 // Repositories
@@ -88,14 +88,13 @@ using (var scope = app.Services.CreateScope())
 {
     try
     {
-        // Initializing the database with data if necessary
         var databaseInitializer = scope.ServiceProvider
-            .GetRequiredService<IDatabaseInitializer>();
-        await databaseInitializer.InitializeAsync();
+            .GetRequiredService<IDatabaseHealthCheck>();
+        await databaseInitializer.CheckDatabasesAsync();
     }
     catch (Exception e)
     {
-        Console.WriteLine($"An error occurred while applying migrations to the databases: {e.Message}");
+        Console.WriteLine($"An error occured while trying to connect to the databases: {e.Message}");
         throw;
     }
 }
