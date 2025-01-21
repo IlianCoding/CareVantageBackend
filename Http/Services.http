@@ -1,3 +1,14 @@
+### Get a specific service by ID
+GET http://localhost:5149/api/Service/01948584-9bd0-70b9-95fc-d7266c9b0392
+
+### Get all services
+GET http://localhost:5149/api/Service
+
+### Get top 5 services
+GET http://localhost:5149/api/Service/top-5-services
+
+### Adding a new service
+
 POST http://localhost:5149/api/ServiceChanges/add-service
 Content-Type: application/json
 
@@ -7,4 +18,68 @@ Content-Type: application/json
     "Description": "Licensing for the software we provide here at CareVantage",
     "Price": 12.99,
     "BillingType": "PayPerUse"
+}
+
+###
+POST http://localhost:5149/api/ServiceChanges/add-service 
+Content-Type: application/json  
+
+{ 
+  "IsActive": false, 
+  "Name": "Subscription Service", 
+  "Description": "Monthly subscription for premium features", 
+  "Price": 29.99, 
+  "BillingType": "Subscription" 
+}  
+
+###
+
+POST http://localhost:5149/api/ServiceChanges/add-service 
+Content-Type: application/json  
+
+{ 
+  "IsActive": true, 
+  "Name": "One-Time Purchase", 
+  "Description": "One-time purchase for lifetime access", 
+  "Price": 99.99, 
+  "BillingType": "OneTime"
+}  
+
+###
+
+POST http://localhost:5149/api/ServiceChanges/add-service 
+Content-Type: application/json  
+
+{ 
+  "IsActive": true, 
+  "Name": "AI Agent", 
+  "Description": "An AI agent that helps with customer service", 
+  "Price": 8.99, 
+  "BillingType": "Subscription"
+}
+
+###
+
+POST http://localhost:5149/api/ServiceChanges/add-service
+Content-Type: application/json
+
+{
+  "IsActive": true,
+  "Name": "Schooling",
+  "Description": "Schooling for school students that need help with their studies",
+  "Price": 15.00,
+  "BillingType": "OneTime"
+}
+
+###
+
+POST http://localhost:5149/api/ServiceChanges/add-service
+Content-Type: application/json
+
+{
+  "IsActive": true,
+  "Name": "Free Trial",
+  "Description": "Free trial for 30 days",
+  "Price": 0.00,
+  "BillingType": "Free"
 }

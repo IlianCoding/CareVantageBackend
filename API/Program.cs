@@ -73,29 +73,36 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var databaseInitializer = scope.ServiceProvider
+        .GetRequiredService<IDatabaseHealthCheck>();
+    await databaseInitializer.CheckDatabasesAsync();
+    
+    if (app.Environment.IsDevelopment())
+    {
+        app.MapOpenApi();
+        app.UseSwagger();
+        app.UseSwaggerUI();
+        try
+        {
+            var careVantageDbContext = scope.ServiceProvider
+                .GetRequiredService<CareVantageDbContext>();
+            var keycloakDbContext = scope.ServiceProvider
+                .GetRequiredService<KeycloakDbContext>();
+            careVantageDbContext.Database.Migrate();
+            keycloakDbContext.Database.Migrate();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"An error occurred while migrating the database in production: {e.Message}");
+            throw;
+        }
+    }
 }
 
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-using (var scope = app.Services.CreateScope())
-{
-    try
-    {
-        var databaseInitializer = scope.ServiceProvider
-            .GetRequiredService<IDatabaseHealthCheck>();
-        await databaseInitializer.CheckDatabasesAsync();
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine($"An error occured while trying to connect to the databases: {e.Message}");
-        throw;
-    }
-}
 app.Run();

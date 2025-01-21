@@ -1,3 +1,4 @@
+using CVB.API.DTOs.ServicePck;
 using CVB.API.Models.ServicePck;
 using CVB.BL.Managers.ServicePck;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,22 @@ public class ServiceChangesController(IServiceManager serviceManager) : Controll
         
         var serviceResult = serviceManager.AddService(serviceAddRequest.IsActive, serviceAddRequest.Name,
             serviceAddRequest.Description, serviceAddRequest.Price, serviceAddRequest.BillingType);
+        
+        var serviceDto = new ServiceDto
+        {
+            Id = serviceResult.Id,
+            IsActive = serviceResult.IsActive,
+            Name = serviceResult.Features.Name,
+            Description = serviceResult.Features.Description,
+            Price = serviceResult.Pricing.BasePrice,
+            BillingType = serviceResult.Pricing.BillingType.ToString()
+        };
 
         return CreatedAtAction(
             actionName: "GetService",
             controllerName: "Service",
-            routeValues: new { id = serviceResult.Id },
-            value: serviceResult);
+            routeValues: new { id = serviceDto.Id },
+            value: serviceDto);
     }
     
     [HttpPut("change-service")]

@@ -8,7 +8,7 @@ public class ServicePricing
     public Guid ServiceId { get; set; }
     
     [Required(ErrorMessage = "Base price is required.")]
-    [Range(0, 50, ErrorMessage = "Base price must be a number between 0 and 50.")]
+    [Range(0, 15000, ErrorMessage = "Base price must be a number between 0 and 50.")]
     public decimal BasePrice { get; set; }
     public BillingType BillingType { get; set; }
     
